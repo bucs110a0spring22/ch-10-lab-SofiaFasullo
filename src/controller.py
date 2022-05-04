@@ -3,6 +3,7 @@ import pygame
 import random
 from src import hero
 from src import enemy
+from src import shieldturtle
 
 
 class Controller:
@@ -24,7 +25,9 @@ class Controller:
             y = random.randrange(100, 400)
             self.enemies.add(enemy.Enemy("Boogie", x, y, 'assets/enemy.png'))
         self.hero = hero.Hero("Conan", 50, 80, "assets/hero.png")
+        self.shieldturtle = shieldturtle.ShieldTurtle("Conan", 50, 80, "assets/shieldturtle.png")
         self.all_sprites = pygame.sprite.Group((self.hero,) + tuple(self.enemies))
+        self.shield_sprites = pygame.sprite.Group(self.shieldturtle)
         self.state = "GAME"
 
     def mainLoop(self):
@@ -40,15 +43,24 @@ class Controller:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
+                    if(event.type == pygame.K_s):
+                      self.background.fill((0, 250, 250))
+                      self.screen.blit(self.background, (0, 0)) 
+                      self.shield_sprites.draw(self.screen)
                     if(event.key == pygame.K_UP):
                         self.hero.move_up()
+                        self.shieldturtle.move_up()
                     elif(event.key == pygame.K_DOWN):
                         self.hero.move_down()
+                        self.shieldturtle.move_down()
                     elif(event.key == pygame.K_LEFT):
                         self.hero.move_left()
+                        self.shieldturtle.move_left()
                     elif(event.key == pygame.K_RIGHT):
                         self.hero.move_right()
+                        self.shieldturtle.move_right()
 
+            #"shield" hero if you press spacebar
             # check for collisions
             fights = pygame.sprite.spritecollide(self.hero, self.enemies, True)
             if(fights):
