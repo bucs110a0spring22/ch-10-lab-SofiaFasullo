@@ -20,6 +20,15 @@ class Hero(pygame.sprite.Sprite):
         self.name = name
         self.speed = 3
         self.health = 3
+        self.shielded = False
+    
+    #make new method for shielded
+    def shieldmode(self):
+        self.image = pygame.image.load("assets/shieldturtle.png").convert_alpha()
+        #get the rectangle for positioning
+        #self.rect = self.image.get_rect()
+        #set other attributes
+        self.shielded = True
 
     #methods to make moving our hero easier
     def move_up(self):
@@ -30,12 +39,18 @@ class Hero(pygame.sprite.Sprite):
         self.rect.x -= self.speed
     def move_right(self):
         self.rect.x += self.speed
+      
 
     def fight(self, opponent):
-        if(random.randrange(3)):
+        if self.shielded:
+          print("successful attack")
+          return True
+        elif (random.randrange(3)):
             self.health -= 1
             print("attack failed. Remaining Health: ", self.health)
             return False
         else:
             print("successful attack")
         return True
+
+#if shielded = true then print success
