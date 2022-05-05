@@ -25,9 +25,6 @@ class Hero(pygame.sprite.Sprite):
     #make new method for shielded
     def shieldmode(self):
         self.image = pygame.image.load("assets/shieldturtle.png").convert_alpha()
-        #get the rectangle for positioning
-        #self.rect = self.image.get_rect()
-        #set other attributes
         self.shielded = True
 
     #methods to make moving our hero easier
@@ -53,4 +50,3 @@ class Hero(pygame.sprite.Sprite):
             print("successful attack")
         return True
 
-#if shielded = true then print success
