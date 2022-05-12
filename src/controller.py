@@ -17,12 +17,18 @@ class Controller:
         pygame.font.init()  # you have to call this at the start, if you want to use this module.
         pygame.key.set_repeat(1, 50)  # initialize a held keey to act as repeated key strikes
         self.climber = climber.Climber("Angela", 300, 200, "assets/climber.png")
+        self.screen.blit(self.climber.image,self.climber.rect)
         self.button1 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
         self.button2 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        #self.screen.blit(self.button2.image,self.button2.rect)
         self.button3 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        #self.screen.blit(self.button3.image,self.button3.rect)
         self.button4 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        #self.screen.blit(self.button4.image,self.button4.rect)
         self.button5 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
-        self.all_sprites = pygame.sprite.Group((self.climber,self.button1,self.button2,self.button3,self.button4,self.button5))# + tuple(self.holds))
+        #self.screen.blit(self.button5.image,self.button5.rect)
+        pygame.display.flip()
+        #self.all_sprites = pygame.sprite.Group((self.climber,self.button1,self.button2,self.button3,self.button4,self.button5))# + tuple(self.holds))
         self.state = "GAME"
         
         """Load the sprites that we need"""
@@ -50,6 +56,12 @@ class Controller:
 
     def gameLoop(self):
         while self.state == "GAME":
+            self.screen.blit(self.button1.image,self.button1.rect)
+            self.screen.blit(self.button2.image,self.button2.rect)
+            self.screen.blit(self.button3.image,self.button3.rect)
+            self.screen.blit(self.button4.image,self.button4.rect)
+            self.screen.blit(self.button5.image,self.button5.rect)
+            pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
@@ -82,7 +94,7 @@ class Controller:
 
                       
             # check for collisions
-                     
+            '''       
             fights = pygame.sprite.spritecollide(self.climber, self.climber, True) #bs filler, will delete
             if(fights):
                 for e in fights:
@@ -101,7 +113,7 @@ class Controller:
             self.all_sprites.draw(self.screen)
             # update the screen
             pygame.display.flip()
-            
+            '''
 
     def gameOver(self):
         self.climber.kill()
