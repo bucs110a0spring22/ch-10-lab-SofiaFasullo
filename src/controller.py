@@ -17,7 +17,6 @@ class Controller:
         pygame.font.init()  # you have to call this at the start, if you want to use this module.
         pygame.key.set_repeat(1, 50)  # initialize a held keey to act as repeated key strikes
         self.climber = climber.Climber("Angela", 300, 200, "assets/climber.png")
-        self.screen.blit(self.climber.image,self.climber.rect)
         self.button1 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
         self.button2 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
         #self.screen.blit(self.button2.image,self.button2.rect)
@@ -56,6 +55,8 @@ class Controller:
 
     def gameLoop(self):
         while self.state == "GAME":
+            #self.screen.blit(self.background) #work on rectangle image
+            self.screen.blit(self.climber.image,self.climber.rect)
             self.screen.blit(self.button1.image,self.button1.rect)
             self.screen.blit(self.button2.image,self.button2.rect)
             self.screen.blit(self.button3.image,self.button3.rect)
@@ -69,7 +70,7 @@ class Controller:
                   if(self.button1.rect.collidepoint(event.pos)):
                     self.climber.grab_hold(self.button1.rect.x,self.button1.rect.y)
                   elif(self.button2.rect.collidepoint(event.pos)):
-                    self.climber.grab_hold(self.button1.rect.x,self.button1.rect.y)
+                    self.climber.grab_hold(self.button2.rect.x,self.button2.rect.y)
                   elif(self.button3.rect.collidepoint(event.pos)):
                     self.climber.grab_hold(self.button3.rect.x,self.button3.rect.y)
                   elif(self.button4.rect.collidepoint(event.pos)):
