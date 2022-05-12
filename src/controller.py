@@ -13,7 +13,7 @@ class Controller:
         self.height = height
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.background = pygame.Surface(self.screen.get_size()).convert()
-        self.background.fill((250, 250, 250))  # set the background to white
+        self.background.fill((200, 200, 200))  # set the background to grey
         pygame.font.init()  # you have to call this at the start, if you want to use this module.
         pygame.key.set_repeat(1, 50)  # initialize a held keey to act as repeated key strikes
         """Load the sprites that we need"""
@@ -23,10 +23,14 @@ class Controller:
         for i in range(num_holds):
             x = random.randrange(40, 600)
             y = random.randrange(50, 300)
-            self.holds.add(holds.Hold("Boogie", x, y, 'assets/hold.png'))
-        self.climber = climber.Climber("Angela", 50, 80, "assets/climber.png")
-        self.all_sprites = pygame.sprite.Group((self.climber,) + tuple(self.holds))
-        self.button = button.Button((250,250),'assets/hold.png')
+            name = "hold" + str(i)
+            self.hold = (holds.Hold(name, x, y, 'assets/hold.png'))
+            self.holds.add(self.hold)
+            #self.holds.add(button.Button(x, y, 'assets/hold.png'))
+        self.climber = climber.Climber("Angela", 300, 200, "assets/climber.png")
+        #self.button = button.Button((250,250),'assets/button.png')
+        self.all_sprites = pygame.sprite.Group((self.climber,self.holds) + tuple(self.holds))
+        
         self.state = "GAME"
 
     def mainLoop(self):
@@ -42,8 +46,8 @@ class Controller:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                  if(self.button.rect.collidepoit(event.pos)):
-                    self.state = "EXIT"
+                  if(self.holds.rect.collidepoit(event.pos)):
+                    self.climber.grab_hold(200,200)
                 if event.type == pygame.KEYDOWN:
                     if(event.type == pygame.K_s):
                       self.background.fill((0, 250, 250))
@@ -78,7 +82,6 @@ class Controller:
             if(self.climber.health == 0):
                 self.state = "GAMEOVER"
             self.all_sprites.draw(self.screen)
-
             # update the screen
             pygame.display.flip()
 

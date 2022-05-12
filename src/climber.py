@@ -36,17 +36,17 @@ class Climber(pygame.sprite.Sprite):
         self.rect.x -= self.speed
     def move_right(self):
         self.rect.x += self.speed
+
+    def grab_hold(self,x,y):
+        self.rect.x = x
+        self.rect.y = y
+
+    def reset(self):
+        self.rect.x = 200
+        self.rect.y = 200
       
 
     def fight(self, opponent):
-        if self.shielded:
-          print("successful attack")
-          return True
-        elif (random.randrange(3)):
-            self.health -= 1
-            print("attack failed. Remaining Health: ", self.health)
-            return False
-        else:
-            print("successful attack")
+        print("successful attack")
         return True
 
