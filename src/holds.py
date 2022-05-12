@@ -1,7 +1,7 @@
 import pygame
 import random
 #model
-class Enemy(pygame.sprite.Sprite):
+class Hold(pygame.sprite.Sprite):
     def __init__(self, name, x, y, img_file):
         #initialize all the Sprite functionality
         pygame.sprite.Sprite.__init__(self)
@@ -19,9 +19,10 @@ class Enemy(pygame.sprite.Sprite):
         #set other attributes
         self.name = name + str(id(self))
         self.speed = 2
-
+'''
     def update(self):
         #print("'Update me,' says " + self.name)
         options = [-1,0,1]
         self.rect.x += random.choice(options)
         self.rect.y += random.choice(options)
+'''

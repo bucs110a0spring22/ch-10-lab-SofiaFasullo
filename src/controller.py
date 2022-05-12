@@ -1,8 +1,9 @@
 import sys
 import pygame
 import random
-from src import hero
-from src import enemy
+from src import climber
+from src import holds
+from src import button
 
 
 class Controller:
@@ -17,14 +18,15 @@ class Controller:
         pygame.key.set_repeat(1, 50)  # initialize a held keey to act as repeated key strikes
         """Load the sprites that we need"""
 
-        self.enemies = pygame.sprite.Group()
-        num_enemies = 3
-        for i in range(num_enemies):
-            x = random.randrange(100, 400)
-            y = random.randrange(100, 400)
-            self.enemies.add(enemy.Enemy("Boogie", x, y, 'assets/enemy.png'))
-        self.hero = hero.Hero("Conan", 50, 80, "assets/hero.png")
-        self.all_sprites = pygame.sprite.Group((self.hero,) + tuple(self.enemies))
+        self.holds = pygame.sprite.Group()
+        num_holds = 20
+        for i in range(num_holds):
+            x = random.randrange(40, 600)
+            y = random.randrange(50, 300)
+            self.holds.add(holds.Hold("Boogie", x, y, 'assets/hold.png'))
+        self.climber = climber.Climber("Angela", 50, 80, "assets/climber.png")
+        self.all_sprites = pygame.sprite.Group((self.climber,) + tuple(self.holds))
+        self.button = button.Button((250,250),'assets/hold.png')
         self.state = "GAME"
 
     def mainLoop(self):
@@ -39,39 +41,41 @@ class Controller:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                  if(self.button.rect.collidepoit(event.pos)):
+                    self.state = "EXIT"
                 if event.type == pygame.KEYDOWN:
                     if(event.type == pygame.K_s):
                       self.background.fill((0, 250, 250))
                       self.screen.blit(self.background, (0, 0)) 
                       self.shield_sprites.draw(self.screen)
                     if(event.key == pygame.K_UP):
-                        self.hero.move_up()
+                        self.climber.move_up()
                     elif(event.key == pygame.K_DOWN):
-                        self.hero.move_down()
+                        self.climber.move_down()
                     elif(event.key == pygame.K_LEFT):
-                        self.hero.move_left()
+                        self.climber.move_left()
                     elif(event.key == pygame.K_RIGHT):
-                        self.hero.move_right()
-            #"shield" hero if you press spacebar
+                        self.climber.move_right()
                     elif(event.key == pygame.K_SPACE):
-                        self.hero.shieldmode()
+                        self.climber.shieldmode()
 
                       
             # check for collisions
-            fights = pygame.sprite.spritecollide(self.hero, self.enemies, True)
+            fights = pygame.sprite.spritecollide(self.climber, self.holds, True)
             if(fights):
                 for e in fights:
-                    if(self.hero.fight(e)):
+                    if(self.climber.fight(e)):
                         e.kill()
                         self.background.fill((250, 250, 250))
                     else:
                         self.background.fill((250, 0, 0))
-                        self.enemies.add(e)
+                        self.holds.add(e)
 
             # redraw the entire screen
-            self.enemies.update()
+            #self.holds.update()
             self.screen.blit(self.background, (0, 0))
-            if(self.hero.health == 0):
+            if(self.climber.health == 0):
                 self.state = "GAMEOVER"
             self.all_sprites.draw(self.screen)
 
@@ -79,7 +83,7 @@ class Controller:
             pygame.display.flip()
 
     def gameOver(self):
-        self.hero.kill()
+        self.climber.kill()
         myfont = pygame.font.SysFont(None, 30)
         message = myfont.render('Game Over', False, (0, 0, 0))
         self.screen.blit(message, (self.width / 2, self.height / 2))

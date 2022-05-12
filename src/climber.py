@@ -1,7 +1,7 @@
 import pygame
 import random
 #model
-class Hero(pygame.sprite.Sprite):
+class Climber(pygame.sprite.Sprite):
     def __init__(self, name, x, y, img_file):
         #initialize all the Sprite functionality
         pygame.sprite.Sprite.__init__(self)
