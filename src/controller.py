@@ -16,22 +16,30 @@ class Controller:
         self.background.fill((200, 200, 200))  # set the background to grey
         pygame.font.init()  # you have to call this at the start, if you want to use this module.
         pygame.key.set_repeat(1, 50)  # initialize a held keey to act as repeated key strikes
+        self.climber = climber.Climber("Angela", 300, 200, "assets/climber.png")
+        self.button1 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        self.button2 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        self.button3 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        self.button4 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        self.button5 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
+        self.all_sprites = pygame.sprite.Group((self.climber,self.button1,self.button2,self.button3,self.button4,self.button5))# + tuple(self.holds))
+        self.state = "GAME"
+        
         """Load the sprites that we need"""
-
+    '''
         self.holds = pygame.sprite.Group()
-        num_holds = 20
+        num_holds = 5
         for i in range(num_holds):
             x = random.randrange(40, 600)
             y = random.randrange(50, 300)
-            name = "hold" + str(i)
-            self.hold = (holds.Hold(name, x, y, 'assets/hold.png'))
-            self.holds.add(self.hold)
+            name = "button" + str(i)
+            #self.hold = (holds.Hold(name, x, y, 'assets/hold.png'))
+            #self.holds.add(self.hold)
             #self.holds.add(button.Button(x, y, 'assets/hold.png'))
+            self.name = button.Button(x,y,'assets/hold.png')
         self.climber = climber.Climber("Angela", 300, 200, "assets/climber.png")
-        self.button = button.Button(200,100,'assets/hold.png')
-        self.all_sprites = pygame.sprite.Group((self.climber,self.button))# + tuple(self.holds))
-        
-        self.state = "GAME"
+        #self.button = button.Button(200,100,'assets/hold.png')
+    '''
 
     def mainLoop(self):
         while True:
@@ -46,8 +54,16 @@ class Controller:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                  if(self.button.rect.collidepoint(event.pos)):
-                    self.climber.grab_hold(200,100)
+                  if(self.button1.rect.collidepoint(event.pos)):
+                    self.climber.grab_hold(self.button1.rect.x,self.button1.rect.y)
+                  elif(self.button2.rect.collidepoint(event.pos)):
+                    self.climber.grab_hold(self.button1.rect.x,self.button1.rect.y)
+                  elif(self.button3.rect.collidepoint(event.pos)):
+                    self.climber.grab_hold(self.button3.rect.x,self.button3.rect.y)
+                  elif(self.button4.rect.collidepoint(event.pos)):
+                    self.climber.grab_hold(self.button4.rect.x,self.button4.rect.y)
+                  elif(self.button5.rect.collidepoint(event.pos)):
+                    self.climber.grab_hold(self.button5.rect.x,self.button5.rect.y)
                 if event.type == pygame.KEYDOWN:
                     if(event.type == pygame.K_s):
                       self.background.fill((0, 250, 250))
@@ -66,7 +82,8 @@ class Controller:
 
                       
             # check for collisions
-            fights = pygame.sprite.spritecollide(self.climber, self.holds, True)
+                     
+            fights = pygame.sprite.spritecollide(self.climber, self.climber, True) #bs filler, will delete
             if(fights):
                 for e in fights:
                     if(self.climber.fight(e)):
@@ -84,6 +101,7 @@ class Controller:
             self.all_sprites.draw(self.screen)
             # update the screen
             pygame.display.flip()
+            
 
     def gameOver(self):
         self.climber.kill()
