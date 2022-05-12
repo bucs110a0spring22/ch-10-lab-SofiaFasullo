@@ -1,5 +1,5 @@
 import pygame
-import random
+import time
 #model
 class Climber(pygame.sprite.Sprite):
     def __init__(self, name, x, y, img_file):
@@ -18,24 +18,24 @@ class Climber(pygame.sprite.Sprite):
         self.rect.y = y
         #set other attributes
         self.name = name
-        self.speed = 3
-        self.health = 3
-        self.shielded = False
+        self.tired = False
+
+    def fatigue(self):
+      start_time = time.time()
+      while True:
+        end_time = time.time()
+        time_lapsed = end_time-start_time
+        if(time_lapsed > 5):
+          self.tired = True
+        return self.tired
+        
     
     #make new method for shielded
-    def shieldmode(self):
-        self.image = pygame.image.load("assets/shieldturtle.png").convert_alpha()
-        self.shielded = True
+    def falling(self):
+      self.rect.x = 300
+      self.rect.y = 380
+      #pass #might have to import new module, for now will just set myself to bottom
 
-    #methods to make moving our hero easier
-    def move_up(self):
-        self.rect.y -= self.speed
-    def move_down(self):
-        self.rect.y += self.speed
-    def move_left(self):
-        self.rect.x -= self.speed
-    def move_right(self):
-        self.rect.x += self.speed
 
     def grab_hold(self,x,y):
         self.rect.x = x
