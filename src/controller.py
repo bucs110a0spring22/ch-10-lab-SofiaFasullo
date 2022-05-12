@@ -2,7 +2,8 @@ import sys
 import pygame
 import random
 from src import climber
-from src import holds
+from src import rockwall
+#from src import holds
 from src import button
 
 
@@ -16,6 +17,7 @@ class Controller:
         self.background.fill((200, 200, 200))  # set the background to grey
         pygame.font.init()  # you have to call this at the start, if you want to use this module.
         pygame.key.set_repeat(1, 50)  # initialize a held keey to act as repeated key strikes
+        self.rockwall = rockwall.Rockwall(0,0,'assets/rockwall1.png')
         self.climber = climber.Climber("Angela", 300, 200, "assets/climber.png")
         self.button1 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
         self.button2 = button.Button(random.randrange(40, 600),random.randrange(50, 300),'assets/hold.png')
@@ -55,7 +57,8 @@ class Controller:
 
     def gameLoop(self):
         while self.state == "GAME":
-            #self.screen.blit(self.background) #work on rectangle image
+            self.screen.blit(self.rockwall.image,self.rockwall.rect) #work on rectangle image
+            #pygame.background.fill()
             self.screen.blit(self.climber.image,self.climber.rect)
             self.screen.blit(self.button1.image,self.button1.rect)
             self.screen.blit(self.button2.image,self.button2.rect)
