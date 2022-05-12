@@ -1,8 +1,8 @@
 import pygame
-#import random
+import random
 #model
-class Hold(pygame.sprite.Sprite):
-    def __init__(self, name, x, y, img_file):
+class Hold2(pygame.sprite.Sprite):
+    def __init__(self, x1,x2, y1,y2, img_file):
         #initialize all the Sprite functionality
         pygame.sprite.Sprite.__init__(self)
 
@@ -14,15 +14,8 @@ class Hold(pygame.sprite.Sprite):
         self.image = pygame.image.load(img_file).convert_alpha()
         #get the rectangle for positioning
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = random.randrange(x1,x2)
+        self.rect.y = random.randrange(y1,y2)
         #set other attributes
-        self.name = name + str(id(self))
-        self.speed = 2
-'''
-    def update(self):
-        #print("'Update me,' says " + self.name)
-        options = [-1,0,1]
-        self.rect.x += random.choice(options)
-        self.rect.y += random.choice(options)
-'''
+        #self.name = name + str(id(self))
+        #self.speed = 2
